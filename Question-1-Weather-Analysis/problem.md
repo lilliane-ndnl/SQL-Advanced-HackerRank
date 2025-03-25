@@ -1,66 +1,65 @@
-# Weekend Hours Worked
+# Weather Analysis
 
 ## Problem Statement
 
-The times that employees log in and out are recorded over the course of a month.  
-For each employee, determine the number of hours worked during the weekends.  
-For simplicity, hours worked in a day are truncated to their integer part.
+We have a table that stores daily weather data for the last six months of 2020. This includes maximum, minimum, and average temperatures.  
 
-### Example  
-For instance:  
-- 10 hours between `'2000-01-01 00:45:00'` and `'2000-01-01 10:45:00'`.  
-- 9 hours between `'2000-01-01 00:46:00'` and `'2000-01-01 10:45:00'`.  
+Your task is to write a query that retrieves the following details for each month:
+- `month` (numerical representation)
+- `monthly maximum temperature`
+- `monthly minimum temperature`
+- `monthly average temperature` (rounded to the nearest integer)
 
-### Expected Output
-Return a list of employee IDs and their total weekend hours worked, sorted in descending order.
+### Expected Output  
+The output should contain the following columns:  
+
+| month | max  | min  | avg |
+|-------|------|------|-----|
+| 7     | 100  | 67   | 79  |
 
 ---
 
 ## Schema
 
-### **Table: `attendance`**
+### **Table: `temperature_records`**
 
-| Column     | Type         | Description                                  |
-|------------|-------------|----------------------------------------------|
-| timestamp  | varchar(20) | Date and time when the employee logged in/out |
-| emp_id     | int         | Unique ID of the employee                   |
+| Column      | Type        | Description                               |
+|------------|------------|-------------------------------------------|
+| record_date | varchar(10) | Date of the record (YYYY-MM-DD format)  |
+| data_type   | varchar(3)  | Type of temperature (`'min'`, `'max'`, or `'avg'`) |
+| data_value  | int        | Temperature value                        |
 
 ---
 
 ## Constraints
-- Each employee will have multiple timestamps.
-- Employees log in and out at different times.
-- Only consider **Saturday (5) and Sunday (6)** as weekends.
-- Pair each login timestamp with the next logout timestamp.
+- Each day has three temperature records: `max`, `min`, and `avg`.
+- The dataset only contains data for the last 6 months of 2020.
+- The `avg` value must be **rounded to the nearest integer**.
 
 ---
 
-## Sample Input (Table: `attendance`)
+## Sample Input (Table: `temperature_records`)
 
-| timestamp           | emp_id |
-|---------------------|--------|
-| 2021-07-03 08:36:00 | 747    |
-| 2021-07-03 17:40:00 | 747    |
-| 2021-07-04 08:37:00 | 747    |
-| 2021-07-04 17:38:00 | 747    |
-| 2021-07-10 08:33:00 | 747    |
-| 2021-07-10 17:54:00 | 747    |
+| record_date  | data_type | data_value |
+|-------------|----------|-----------|
+| 2020-07-01  | max      | 92        |
+| 2020-07-01  | min      | 71        |
+| 2020-07-01  | avg      | 74        |
+| 2020-07-02  | max      | 90        |
+| 2020-07-02  | min      | 67        |
+| 2020-07-02  | avg      | 77        |
 
 ---
 
 ## Expected Output
 
-| emp_id | work_hours |
-|--------|-----------|
-| 747    | 75        |
-| 904    | 74        |
-| 425    | 73        |
-| 107    | 72        |
-| 878    | 70        |
+| month | max  | min  | avg |
+|-------|------|------|-----|
+| 7     | 100  | 67   | 79  |
 
 ---
 
 ## Notes
-- Ensure that timestamps are correctly **paired** (IN and OUT).
-- Only consider **weekend timestamps** in calculations.
-- Work hours should be truncated to their integer part.
+- Extract the `month` from the `record_date`.
+- Use SQL aggregate functions (`MAX`, `MIN`, `AVG`).
+- The `avg` column must be **rounded**.
