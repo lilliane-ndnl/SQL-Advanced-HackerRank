@@ -1,4 +1,8 @@
--- Solution to calculate weekend hours worked per employee
+/*
+Enter your query below.
+Please append a semicolon ";" at the end of the query.
+*/
+
 WITH weekend_data AS (
     SELECT 
         emp_id, 
